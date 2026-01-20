@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мои чаты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Добро пожаловать, {{ user.username }}!</h1>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Выйти</a>
+        </div>
+        
+        <div class="content">
+            <h2 class="section-title">Создать новый чат</h2>
+            <form class="create-chat-form" action="{{ url_for('create_chat') }}" method="POST">
+                <input type="text" name="chat_name" placeholder="Введите название чата" required>
+                <button type="submit" class="btn">Создать чат</button>
+            </form>
+            
+            <h2 class="section-title">Ваши чаты</h2>
+            <div class="chat-list">
+                {% if chats %}
+                    {% for chat in chats %}
+                        <div class="chat-item">
+                            <div class="chat-info">
+                                <h3>{{ chat.name }}</h3>
+                                <p>Участников: {{ chat.members|length }}</p>
+                            </div>
+                            <a href="{{ url_for('chat', chat_id=chat.id) }}" class="open-chat-btn">Открыть</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>📭</p>
+                        <p>У вас пока нет чатов</p>
+                        <p>Создайте первый чат!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
